@@ -1,0 +1,118 @@
+Processing file: Al-Hamd.pdf
+--------Analyzing invoice #1--------
+InvoiceDate: 19/12/24 (Confidence: 0.854)
+InvoiceId: R-7119 (Confidence: 0.644)
+InvoiceTotal: -10500/ (Confidence: 0.733)
+Items: None (Confidence: None)
+VendorAddress: Shop # 13 Ground Floor,
+Uni Center, I.I Chundrigar Road,
+Karachi. (Confidence: 0.865)
+VendorAddressRecipient: AL-HAMD COMPUTER (Confidence: 0.809)
+VendorName: AL-HAMD
+COMPUTER (Confidence: 0.934)
+Invoice items:
+...Item #1
+......Amount: 10500/- (Confidence: 0.944)
+......Description: Lenovo Thinkpad
+Model T495 (Confidence: 0.715)
+......Quantity: 01 (Confidence: 0.898)
+
+Processing file: Ezy.pdf
+--------Analyzing invoice #1--------
+CustomerId: 0710739-7 (Confidence: 0.936)
+InvoiceDate: January 7, 2025 (Confidence: 0.813)
+InvoiceId: GPKSI12999 (Confidence: 0.95)
+InvoiceTotal: 253,156.26 (Confidence: 0.948)
+Items: None (Confidence: None)
+SubTotal: 220,135.88 (Confidence: 0.949)
+TaxDetails: None (Confidence: None)
+TotalTax: 33,020.38 (Confidence: 0.951)
+VendorAddress: 306, 3rd Floor, Uni Centre, I.I. Chundrigar Road,
+Karachi (Confidence: 0.874)
+VendorAddressRecipient: International Office Products (Pvt.) Ltd. (Confidence: 0.894)
+VendorName: EZY
+TM
+excellence (Confidence: 0.414)
+VendorTaxId: 1200850026791 (Confidence: 0.414)
+Invoice items:
+...Item #1
+......Amount: 220,135.88 (Confidence: 0.945)
+......Description: Microsoft 365 Business Basic
+GPKPI04165 PI-312917 @278.35 (Confidence: 0.942)
+......ProductCode: MST-CFQ7TTC0LH18-2 (Confidence: 0.588)
+......Quantity: 147 (Confidence: 0.944)
+......TaxRate: 15 (Confidence: 0.944)
+......UnitPrice: 1,497.52 (Confidence: 0.945)
+
+Processing file: Sigma.pdf
+--------Analyzing invoice #1--------
+BillingAddress: 306, 3RD FLOOR, UNI CENTRE,
+I.I CHUNDRIGAR ROAD,
+KARACHI (Confidence: 0.88)
+BillingAddressRecipient: INTERNATIONAL OFFICE PRODUCTS (PRIVATE) LIMITED, (Confidence: 0.917)
+CustomerName: INTERNATIONAL OFFICE PRODUCTS (PRIVATE) LIMITED, (Confidence: 0.917)
+InvoiceDate: 22-05-2024 (Confidence: 0.966)
+InvoiceId: 0194 (Confidence: 0.967)
+InvoiceTotal: PKR
+90,500 (Confidence: 0.656)
+Items: None (Confidence: None)
+PaymentTerm: Net 15 (Confidence: 0.944)
+PurchaseOrder: EL-007339 (Confidence: 0.958)
+RemittanceAddressRecipient: "Sigma Technologies" (Confidence: 0.586)
+ShippingAddress: 306, 3RD FLOOR, UNI CENTRE,
+I.I CHUNDRIGAR ROAD,
+KARACHI (Confidence: 0.877)
+ShippingAddressRecipient: INTERNATIONAL OFFICE PRODUCTS (PRIVATE) LIMITED, (Confidence: 0.918)
+VendorAddress: Office # 717, 7th Floor,
+Muhammadi Trade Tower,
+I.I Chundrigarh Road,
+Karachi, Pakistan. (Confidence: 0.818)
+VendorAddressRecipient: Sigma Technologies (Confidence: 0.949)
+VendorName: SIGMA
+TECHNOLOGIES (Confidence: 0.949)
+VendorTaxId: 7962282-0 (Confidence: 0.644)
+Invoice items:
+...Item #1
+......Amount: 10,500 (Confidence: 0.918)
+......Description: SSDSC2KB960GZ
+INTEL SOLID STATE DRIVE
+HMT42GR7MFR4A-H9 T3 AC 208
+SK HYNIX MEMORY MODULE RF/ USED (Confidence: 0.656)
+......Quantity: 1 (Confidence: 0.68)
+......Tax: 1,602 (Confidence: 0.913)
+......TaxRate: 18% (Confidence: 0.916)
+......UnitPrice: 67,797 (Confidence: 0.917)
+
+Processing file: Techsirat.pdf
+--------Analyzing invoice #1--------
+BillingAddress: 306,3Rd Floor Uni Centre, Il Chundrigar Road
+Karachi ... (Confidence: 0.684)
+BillingAddressRecipient: INTERNATIONAL OFFICE PRODUCTS (PVT) LTD (Confidence: 0.885)
+CustomerId: 000259017002034 (Confidence: 0.653)
+CustomerName: INTERNATIONAL OFFICE PRODUCTS (PVT) LTD (Confidence: 0.885)
+InvoiceDate: 06/01/2025 (Confidence: 0.936)
+InvoiceId: 732/25/1C/000010 (Confidence: 0.937)
+InvoiceTotal: 75,274.20 (Confidence: 0.594)
+Items: None (Confidence: None)
+PurchaseOrder: ML-016269 (Confidence: 0.859)
+ShippingAddress: 306,3Rd Floor Uni Centre, Il Chundrigar Road
+Karachi ... (Confidence: 0.71)
+ShippingAddressRecipient: INTERNATIONAL OFFICE PRODUCTS (PVT) LTD (Confidence: 0.885)
+SubTotal: 75,199.00 (Confidence: 0.937)
+TotalDiscount: 0.00 (Confidence: 0.709)
+TotalTax: 75.20 (Confidence: 0.519)
+VendorAddress: TECHSIRAT
+OFFICE#1102-1103,11th FLOOR,STAR CITY MALL,SADDAR.Tel: (Confidence: 0.653)
+VendorAddressRecipient: KHI SADDAR (Confidence: 0.581)
+VendorName: Techsirat Pvt Ltd (Confidence: 0.565)
+Invoice items:
+...Item #1
+......Amount: 75,274.20 (Confidence: 0.921)
+......Description: XT2427-2 MOTOROLA G85 12/256 URBAN GREY (Confidence: 0.913)
+......ProductCode: 012108 (Confidence: 0.914)
+......Quantity: 1 (Confidence: 0.921)
+......Tax: 0.00
+75.20 (Confidence: 0.499)
+......TaxRate: 0% (Confidence: 0.922)
+......UnitPrice: 75,199.00 (Confidence: 0.921)
+
