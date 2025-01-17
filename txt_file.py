@@ -59,8 +59,8 @@ def add_custom_styles():
 
 # Function to analyze the uploaded PDFs
 def analyze_invoices(files):
-    endpoint = os.getenv("AZURE_ENDPOINT")
-    key = os.getenv("AZURE_KEY")
+    endpoint = os.getenv("https://yourcompanyinvoicemanager.cognitiveservices.azure.com")
+    key = os.getenv("31ad5cebecac4cb6af548253447ca72e")
 
     if not endpoint or not key:
         st.error("Please set the AZURE_ENDPOINT and AZURE_KEY environment variables.")
