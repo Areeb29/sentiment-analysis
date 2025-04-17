@@ -1,160 +1,107 @@
-import os
+import requests
+import json
 import streamlit as st
-from azure.core.credentials import AzureKeyCredential
-from azure.ai.documentintelligence import DocumentIntelligenceClient
-from azure.ai.documentintelligence.models import AnalyzeResult
-from io import BytesIO
+import matplotlib.pyplot as plt
 
-# ----------------- PAGE CONFIG -----------------
-st.set_page_config(
-    page_title="Invoice Analyzer",
-    layout="wide"
-)
+# Set your Azure Language resource details
+endpoint = "https://language-health-ai.cognitiveservices.azure.com/"  # Replace with your endpoint
+key = "4G5RSjcltxYodAo2RmqG7kCuO3AvUh5o2wOaT2YTMwggSNY2c2wtJQQJ99BDACYeBjFXJ3w3AAAaACOGmUcR"  # Replace with your subscription key
 
-# ----------------- CUSTOM CSS -----------------
-# ----------------- CUSTOM CSS -----------------
-# ----------------- CUSTOM CSS -----------------
+# Inject custom CSS for background colors
 st.markdown("""
     <style>
-    /* Entire background including body */
-    body {
-        background-color: #f0f4f8 !important;
-        color: #333333 !important;
-    }
+        /* Main screen background color */
+        .css-18e3th9 {
+            background-color: #f4f7fc !important;  /* Light Blue */
+        }
+        
+        /* Sidebar background color */
+        .css-1d391kg {
+            background-color: #2a3c54 !important;  /* Dark Blue */
+            color: white !important;
+        }
 
-    /* Main container */
-    .main {
-        background-color: #f0f4f8 !important;
-    }
+        /* Button background color */
+        .stButton button {
+            background-color: #4CAF50 !important;
+            color: white !important;
+        }
 
-    /* Block container that wraps Streamlit components */
-    .main .block-container {
-        background-color: #f0f4f8 !important;
-        padding-top: 2rem;
-    }
+        /* Text area background color */
+        .stTextArea textarea {
+            background-color: #f1f1f1 !important;
+        }
 
-    /* Sidebar */
-    section[data-testid="stSidebar"] {
-        background-color: #e0e4e8 !important;
-        color: #000000 !important;
-    }
+        /* Heading styles */
+        .css-1v3fvcr {
+            color: #333 !important;
+        }
 
-    section[data-testid="stSidebar"] h1,
-    section[data-testid="stSidebar"] h2,
-    section[data-testid="stSidebar"] h3,
-    section[data-testid="stSidebar"] p {
-        color: #000000 !important;
-    }
-
-    /* Optional: content centering helper */
-    .centered {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-    }
+        /* Footer background color (if needed) */
+        .css-1d391kg footer {
+            background-color: #2a3c54 !important;
+        }
     </style>
 """, unsafe_allow_html=True)
+# Sample text (can be replaced by Streamlit input)
+st.title("Sentiment Analysis")
+text_input = st.text_area("Enter text:", "I love using Azure AI!", height=200, help="Type a sentence to analyze its sentiment.")
 
-# ----------------- SIDEBAR CONTENT -----------------
-with st.sidebar:
-    st.header("📄 Project Info")
-    st.markdown("""
-    This tool leverages **Azure Document Intelligence** to analyze invoice PDFs.
+# Sidebar Instructions
+st.sidebar.title("Sentiment Analysis Tool")
+st.sidebar.markdown("""
+    **How to use**: 
+    1. Enter any text you want to analyze.
+    2. Press "Analyze Sentiment" to get the sentiment analysis result.
+    3. View the result below along with a confidence score breakdown.
+    4. Use the "Clear Text" button to reset.
+""")
 
-    **Features:**
-    - Extract fields and line items using `prebuilt-invoice` model  
-    - Confidence scoring on every field  
-    - Download results as plain text  
+if st.button("Analyze Sentiment"):
+    with st.spinner('Analyzing...'):
+        headers = {
+            "Ocp-Apim-Subscription-Key": key,
+            "Content-Type": "application/json"
+        }
 
-    **Tech Stack:**
-    - Python  
-    - Streamlit  
-    - Azure AI Document Intelligence  
+        body = {
+            "documents": [
+                {
+                    "language": "en",
+                    "id": "1",
+                    "text": text_input
+                }
+            ]
+        }
 
-    💡 Developed for automating invoice data extraction.
-    """)
+        url = endpoint + "text/analytics/v3.1/sentiment"
+        response = requests.post(url, headers=headers, json=body)
+        result = response.json()
 
-# ----------------- MAIN CONTENT -----------------
-st.markdown("<div class='centered'>", unsafe_allow_html=True)
-st.markdown("<h2 style='color: #0A84FF;'>Invoice Analyzer using Azure Model</h2>", unsafe_allow_html=True)
-st.markdown("<p>Upload your Invoice PDFs below 👇</p>", unsafe_allow_html=True)
-st.markdown("</div>", unsafe_allow_html=True)
+    if "documents" in result:
+        sentiment = result["documents"][0]["sentiment"]
+        confidence_scores = result['documents'][0]['confidenceScores']
+        
+        st.markdown("### Sentiment Analysis Result")
+        st.markdown(f"**Sentiment**: {sentiment}")
+        st.markdown(f"**Confidence Scores**:")
+        st.markdown(f" - **Positive**: {confidence_scores['positive']:.2f}")
+        st.markdown(f" - **Neutral**: {confidence_scores['neutral']:.2f}")
+        st.markdown(f" - **Negative**: {confidence_scores['negative']:.2f}")
 
-# ----------------- ANALYZE FUNCTION -----------------
-def analyze_invoices(files):
-    endpoint = os.getenv("AZURE_ENDPOINT")
-    key = os.getenv("AZURE_KEY")
+        # Display bar chart
+        st.subheader("Confidence Scores Chart")
+        fig, ax = plt.subplots()
+        ax.bar(['Positive', 'Neutral', 'Negative'], 
+               [confidence_scores['positive'], confidence_scores['neutral'], confidence_scores['negative']],
+               color=['green', 'blue', 'red'])
+        ax.set_ylabel("Confidence")
+        ax.set_title("Sentiment Confidence Scores")
+        st.pyplot(fig)
+    else:
+        st.error("Error analyzing the text.")
 
-    if not endpoint or not key:
-        st.error("Please set the AZURE_ENDPOINT and AZURE_KEY environment variables.")
-        return None
-
-    document_intelligence_client = DocumentIntelligenceClient(endpoint=endpoint, credential=AzureKeyCredential(key))
-    results = ""
-
-    for uploaded_file in files:
-        try:
-            file_content = uploaded_file.read()
-            poller = document_intelligence_client.begin_analyze_document(
-                "prebuilt-invoice", file_content, locale="en-US", content_type="application/octet-stream"
-            )
-            invoices: AnalyzeResult = poller.result()
-
-            results += f"Processing file: {uploaded_file.name}\n"
-            if invoices.documents:
-                for idx, invoice in enumerate(invoices.documents):
-                    results += f"--------Analyzing invoice #{idx + 1}--------\n"
-                    if invoice.fields:
-                        for field_name, field_value in invoice.fields.items():
-                            results += f"{field_name}: {field_value.get('content')} (Confidence: {field_value.get('confidence')})\n"
-
-                    results += "Invoice items:\n"
-                    items = invoice.fields.get("Items")
-                    if items:
-                        for idx, item in enumerate(items.get("valueArray", [])):
-                            results += f"...Item #{idx + 1}\n"
-                            for key, value in item.get("valueObject", {}).items():
-                                results += f"......{key}: {value.get('content')} (Confidence: {value.get('confidence')})\n"
-
-        except Exception as e:
-            results += f"Error processing file {uploaded_file.name}: {e}\n"
-
-        results += "\n"  # Add a blank line between results for each file
-
-    return results
-
-# ----------------- FILE UPLOADER -----------------
-uploaded_files = st.file_uploader(
-    "Drag and drop files here",
-    type=["pdf"],
-    accept_multiple_files=True
-)
-
-# ----------------- RUN ANALYSIS BUTTON -----------------
-if uploaded_files:
-    st.success(f"{len(uploaded_files)} file(s) uploaded:")
-    for f in uploaded_files:
-        st.write(f.name)
-
-    # Add "Run Analysis" button
-    if st.button("Run Analysis 🚀"):
-        # Run analysis and display a progress indicator
-        with st.spinner("Analyzing PDFs... please wait ⏳"):
-            output = analyze_invoices(uploaded_files)
-
-        if output:
-            st.success("🎉 Analysis complete! Download your results below.")
-            
-            # Save output to a downloadable text file
-            output_file = BytesIO()
-            output_file.write(output.encode("utf-8"))
-            output_file.seek(0)
-
-            # Display the download button
-            st.download_button(
-                label="📥 Download Results",
-                data=output_file,
-                file_name="invoice_analysis_results.txt",
-                mime="text/plain"
-            )
+    # Clear text button
+    if st.button("Clear Text"):
+        text_input = ""  # Reset the text area
+        st.text_area("Enter text:", value=text_input)

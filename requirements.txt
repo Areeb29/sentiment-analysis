@@ -1,3 +1,5 @@
 streamlit
 azure-ai-documentintelligence
 pandas
+azure-identity
+azure-healthinsights-radiologyinsights==1.0.0
