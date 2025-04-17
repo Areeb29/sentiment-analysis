@@ -5,59 +5,83 @@ from azure.ai.documentintelligence import DocumentIntelligenceClient
 from azure.ai.documentintelligence.models import AnalyzeResult
 from io import BytesIO
 
-# Add custom styles
-def add_custom_styles():
-    st.markdown(f"""
-        <style>
-        /* Background styling */
-        .stApp {{
-            background-color: #D9DFF0;
-            color: #333333;
-            font-family: 'Arial', sans-serif;
-            padding: 10px;
-        }}
+# ----------------- PAGE CONFIG -----------------
+st.set_page_config(
+    page_title="Invoice Analyzer",
+    layout="wide"
+)
 
-        /* Centered and styled logo */
-        .logo-container {{
-            text-align: center;
-            margin: 10px auto;
-        }}
-        .logo-container img {{
-            width: 200px; /* Adjust width for compact display */
-            margin-bottom: 10px; /* Reduce bottom margin */
-        }}
+# ----------------- CUSTOM CSS -----------------
+# ----------------- CUSTOM CSS -----------------
+# ----------------- CUSTOM CSS -----------------
+st.markdown("""
+    <style>
+    /* Entire background including body */
+    body {
+        background-color: #f0f4f8 !important;
+        color: #333333 !important;
+    }
 
-        /* Header styling */
-        h1 {{
-            color: #4B0082;
-            text-align: center;
-            font-size: 28px; /* Smaller font size */
-            margin-bottom: 15px; /* Reduce margin below header */
-        }}
+    /* Main container */
+    .main {
+        background-color: #f0f4f8 !important;
+    }
 
-        /* Buttons */
-        .stButton > button {{
-            background-color: #606BA6;
-            color: white;
-            font-size: 14px; /* Smaller button font */
-            padding: 8px 16px; /* Reduce padding for compact buttons */
-            border-radius: 5px; /* Slightly rounded corners */
-            border: none;
-            margin: 10px auto; /* Center and compact margin */
-        }}
-        .stButton > button:hover {{
-            background-color: #6A5ACD;
-        }}
+    /* Block container that wraps Streamlit components */
+    .main .block-container {
+        background-color: #f0f4f8 !important;
+        padding-top: 2rem;
+    }
 
-        /* File uploader styling */
-        .stFileUploader {{
-            margin: 5px 0; /* Compact file uploader margin */
-        }}
-        </style>
-    """, unsafe_allow_html=True)
+    /* Sidebar */
+    section[data-testid="stSidebar"] {
+        background-color: #e0e4e8 !important;
+        color: #000000 !important;
+    }
 
+    section[data-testid="stSidebar"] h1,
+    section[data-testid="stSidebar"] h2,
+    section[data-testid="stSidebar"] h3,
+    section[data-testid="stSidebar"] p {
+        color: #000000 !important;
+    }
 
-# Function to analyze the uploaded PDFs
+    /* Optional: content centering helper */
+    .centered {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# ----------------- SIDEBAR CONTENT -----------------
+with st.sidebar:
+    st.header("📄 Project Info")
+    st.markdown("""
+    This tool leverages **Azure Document Intelligence** to analyze invoice PDFs.
+
+    **Features:**
+    - Extract fields and line items using `prebuilt-invoice` model  
+    - Confidence scoring on every field  
+    - Download results as plain text  
+
+    **Tech Stack:**
+    - Python  
+    - Streamlit  
+    - Azure AI Document Intelligence  
+
+    💡 Developed for automating invoice data extraction.
+    """)
+
+# ----------------- MAIN CONTENT -----------------
+st.markdown("<div class='centered'>", unsafe_allow_html=True)
+st.markdown("<h2 style='color: #0A84FF;'>Invoice Analyzer using Azure Model</h2>", unsafe_allow_html=True)
+st.markdown("<p>Upload your Invoice PDFs below 👇</p>", unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
+
+# ----------------- ANALYZE FUNCTION -----------------
 def analyze_invoices(files):
     endpoint = os.getenv("AZURE_ENDPOINT")
     key = os.getenv("AZURE_KEY")
@@ -100,26 +124,20 @@ def analyze_invoices(files):
 
     return results
 
-# Streamlit App UI
-add_custom_styles()
+# ----------------- FILE UPLOADER -----------------
+uploaded_files = st.file_uploader(
+    "Drag and drop files here",
+    type=["pdf"],
+    accept_multiple_files=True
+)
 
-# Logo Section
-# Logo Section
-col1, col2, col3 = st.columns([2, 5, 1])
-
-# Place the image in the center column
-with col2:
-    st.image("YoutubeLogo.png", width=300)
-
-
-# App Title
-st.title("Invoice Processing with Mango Analytics")
-
-# File uploader
-st.markdown("### Upload your File below 👇")
-uploaded_files = st.file_uploader("Upload PDF files", type=["pdf"], accept_multiple_files=True)
-
+# ----------------- RUN ANALYSIS BUTTON -----------------
 if uploaded_files:
+    st.success(f"{len(uploaded_files)} file(s) uploaded:")
+    for f in uploaded_files:
+        st.write(f.name)
+
+    # Add "Run Analysis" button
     if st.button("Run Analysis 🚀"):
         # Run analysis and display a progress indicator
         with st.spinner("Analyzing PDFs... please wait ⏳"):
